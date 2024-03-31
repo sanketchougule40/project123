@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout code from CodeCommit
+                git branch: 'main', credentialsId: 'your-git-credentials', url: 'your-codecommit-repo-url'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Build your Java project (e.g., using Maven)
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Deploy to AWS CodeDeploy
+                script {
+                    def appName = 'YourApplicationName'
+                    def deploymentGroupName = 'YourDeploymentGroupName'
+                    def s3Bucket = 'your-s3-bucket'
+                    def s3Prefix = 'your/s3/prefix'
+
+                    def inputFile = 'appspec.yaml'
+
+                    // Upload artifacts to S3
+                    def artifact = findFiles(glob: 'target/*.jar').collectFirst { it }
+                    def artifactPath = artifact.name
+                    def s3Object = s3Bucket + '/' + s3Prefix + '/' + artifactPath
+                    sh "aws s3 cp ${artifact} s3://${s3Object}"
+
+                    // Create deployment
+                    def deployCommand = "aws deploy create-deployment --application-name ${appName} --deployment-group-name ${deploymentGroupName} --s3-location bucket=${s3Bucket},bundleType=zip,key=${s3Prefix}/${artifactPath} --file-exists-behavior OVERWRITE --deployment-config-name CodeDeployDefault.OneAtATime"
+                    def deploymentId = sh(script: deployCommand, returnStdout: true).trim()
+                    
+                    echo "Deployment created with ID: ${deploymentId}"
+                }
+            }
+        }
+    }
+}
