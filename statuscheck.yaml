@@ -1,0 +1,50 @@
+---
+- name: Check system metrics on remote machines
+  hosts: all
+  gather_facts: yes
+  tasks:
+    - name: Gather RAM, CPU, and Disk Usage Information
+      command: |
+        echo "Memory Usage:"
+        free -h
+        echo "CPU Usage:"
+        top -bn1 | grep "Cpu(s)"
+        echo "Disk Usage:"
+        df -h
+      register: system_info
+
+    - name: Display collected system information
+      debug:
+        msg: |
+          Memory Usage:
+          {{ system_info.stdout_lines[0] }}
+
+          CPU Usage:
+          {{ system_info.stdout_lines[1] }}
+
+          Disk Usage:
+          {{ system_info.stdout_lines[2] }}
+
+    - name: Collect RAM usage
+      command: free -h
+      register: ram_usage
+
+    - name: Collect CPU usage
+      command: top -bn1 | grep "Cpu(s)"
+      register: cpu_usage
+
+    - name: Collect disk usage
+      command: df -h
+      register: disk_usage
+
+    - name: Print RAM usage
+      debug:
+        msg: "RAM Usage: {{ ram_usage.stdout }}"
+
+    - name: Print CPU usage
+      debug:
+        msg: "CPU Usage: {{ cpu_usage.stdout }}"
+
+    - name: Print Disk usage
+      debug:
+        msg: "Disk Usage: {{ disk_usage.stdout }}"
