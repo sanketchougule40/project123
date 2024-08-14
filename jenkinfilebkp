@@ -37,7 +37,7 @@ pipeline {
                     def deployCommand = "aws deploy create-deployment --application-name ${appName} --deployment-group-name ${deploymentGroupName} --s3-location bucket=${s3Bucket},bundleType=zip,key=${s3Prefix}/${artifactPath} --file-exists-behavior OVERWRITE --deployment-config-name CodeDeployDefault.OneAtATime"
                     def deploymentId = sh(script: deployCommand, returnStdout: true).trim()
                     
-                    echo "Deployment created with ID: ${deploymentId}"
+                    iecho "Deployment created with ID: ${deploymentId}"
                 }
             }
         }
