@@ -1,105 +1,51 @@
-package com.example.inventory;
+<!-- pom.xml -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.*;
-import java.util.*;
+    <groupId>com.example</groupId>
+    <artifactId>inventory</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
-@SpringBootApplication
-public class InventoryApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(InventoryApplication.class, args);
-    }
-}
+    <name>inventory</name>
+    <description>Simple Spring Boot Inventory App</description>
 
-@RestController
-@RequestMapping("/api/products")
-class ProductController {
-    private final List<Product> inventory = new ArrayList<>();
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.2</version> <!-- Change this version based on your requirement -->
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
 
-    @GetMapping
-    public List<Product> getProducts() {
-        return inventory;
-    }
+    <properties>
+        <java.version>17</java.version> <!-- Make sure Jenkins is using Java 17 or update this -->
+    </properties>
 
-    @PostMapping
-    public Product addProduct(@RequestBody Product product) {
-        inventory.add(product);
-        return product;
-    }
+    <dependencies>
+        <!-- Spring Boot Web Starter -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
 
-    @PutMapping("/{id}")
-    public Product updateStock(@PathVariable int id, @RequestBody Product updatedProduct) {
-        for (Product product : inventory) {
-            if (product.getId() == id) {
-                product.setName(updatedProduct.getName());
-                product.setQuantity(updatedProduct.getQuantity());
-                return product;
-            }
-        }
-        return null;
-    }
-}
+        <!-- Spring Boot Test (optional) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
-class Product {
-    private static int counter = 1;
-    private int id;
-    private String name;
-    private int quantity;
-
-    public Product() {
-        this.id = counter++;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-}
-
-/* README.md */
-/*
-# Spring Boot Inventory App
-
-This is a simple Spring Boot-based inventory management system that allows users to:
-- Add new products
-- View product details
-- Update stock levels
-
-## Installation
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/your-username/spring-boot-inventory.git
-   ```
-2. Navigate to the project folder:
-   ```sh
-   cd spring-boot-inventory
-   ```
-3. Run the application:
-   ```sh
-   mvn spring-boot:run
-   ```
-
-## API Endpoints
-- `GET /api/products` - Retrieve all products
-- `POST /api/products` - Add a new product
-- `PUT /api/products/{id}` - Update stock for a product
-
-## License
-This project is licensed under the MIT License.
-*/
+    <build>
+        <plugins>
+            <!-- Spring Boot Maven Plugin -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
