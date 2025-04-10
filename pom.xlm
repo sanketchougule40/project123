@@ -1,4 +1,4 @@
-<!-- pom.xml -->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
@@ -8,9 +8,9 @@
     <groupId>com.example</groupId>
     <artifactId>inventory</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
-    <name>inventory</name>
+    <name>inventory mvn application</name>
     <description>Simple Spring Boot Inventory App</description>
 
     <parent>
