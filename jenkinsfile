@@ -5,7 +5,7 @@ pipeline {
          jdk 'java'
     }
     stages {
-        stage('Stage-1 : Clean') { 
+           stage('Stage-1 : Clean') { 
             steps {
                 sh 'mvn clean'
             }
@@ -25,5 +25,16 @@ pipeline {
                 sh 'mvn test'
             }
         }
+          stage('Stage-5 : Package') { 
+            steps {
+                sh 'mvn Package'
+            }
+        }
+          stage('Stage-6 : Verify') { 
+            steps {
+                sh 'mvn verify'
+            }
+        }
+          
     }
 }
