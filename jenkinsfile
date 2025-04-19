@@ -5,16 +5,7 @@ pipeline {
         jdk 'java'
         maven 'maven'
     }
-
-    stages {
-        stage('Checkout Code') {
-            steps {
-                git 'https://github.com/sanketchougule40/project123.git'
-                // 👆 Replace this with your actual Git repo URL
-            }
-        }
-
-        stage('Clean') {
+       stage('Clean') {
             steps {
                 sh 'mvn clean'
             }
