@@ -5,14 +5,6 @@ pipeline {
         jdk 'java'       // Make sure 'java' is configured in Jenkins > Global Tool Configuration
         maven 'maven'    // Same for 'maven'
     }
-
-    stages {
-        stage('Checkout Code') {
-            steps {
-                git 'https://github.com/sanketchougule40/project123.git'
-            }
-        }
-
         stage('Clean') {
             steps {
                 sh 'mvn clean'
