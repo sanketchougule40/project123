@@ -2,10 +2,12 @@ pipeline {
     agent any
 
     tools {
-        jdk 'java'
-        maven 'maven'
+        jdk 'java'       // Make sure 'java' is defined in Jenkins tools config
+        maven 'maven'    // Make sure 'maven' is defined in Jenkins tools config
     }
-       stage('Clean') {
+
+    stages {
+        stage('Clean') {
             steps {
                 sh 'mvn clean'
             }
